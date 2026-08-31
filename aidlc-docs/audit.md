@@ -257,3 +257,27 @@
 
 ---
 
+## backend-api Functional Design — Clarification Answers Received
+**Timestamp**: 2026-08-31T00:00:00Z
+**User Input**: "@aidlc-docs/construction/plans/backend-api-functional-design-plan.md 의 모든 내용에 Answer 를 작성했어. 해당 내용대로 기능 정의를 진행하고, commit하고, remote branch 에 push 해 줘."
+**AI Response**: Read all 11 embedded [Answer]: tags. Answers: Q1=B(관리자 자유 상태 전이), Q2=B(미완료 주문 있으면 이용완료 차단 409), Q3=B(soft delete: deleted_at/deleted_by), Q4=A(테이블 4~6자리 숫자 PIN 예외 + 관리자 8자↑), Q5=C(활성 세션 재-setup 거부 409), Q6=A(트랜잭션 내 MAX(order_seq)+1 채번), Q7=A(요청 시 세션 만료 검사→401 TOKEN_EXPIRED, 관리자 재-setup), Q8=B(최소 시드 세트), Q9=A(has_new 서버 미계산, 클라 판단), Q10=B(Menu.is_available 가용성 토글, 품절 주문 422), Q11=B(수치 상한 없음). Detected blocking conflict: Q11=B contradicts user-enabled Security Baseline SECURITY-05 (mandatory string/array length bounds + request body size limit) and Integration Contract §8.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / Functional Design — answers collected, ambiguity/conflict analysis (Step 5)
+
+---
+
+## backend-api Functional Design — SECURITY-05 Blocking Conflict Follow-up
+**Timestamp**: 2026-08-31T00:00:00Z
+**SECURITY Finding**: SECURITY-05 (Input Validation) — Q11=B ("타입 검증만, 수치 상한 없음") would omit mandatory length/size bounds required by the enabled Security Baseline and Integration Contract §8. Presented follow-up question with options: (1) 보안 최소 상한 적용 [recommended], (2) 합리적 기본값 전체(Q11 A), (3) Q11=B 그대로(would create blocking finding, not recommended).
+**User Input**: Selected "보안 최소 상한 적용 (권장)".
+**AI Response**: Conflict resolved. Apply only SECURITY-05-mandated minimum bounds (string max length, items array max size, quantity ceiling, request body size limit), no arbitrary business caps; concrete values deferred to NFR Design. SECURITY-05 now Compliant — no blocking finding. Recorded resolution in plan §4.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / Functional Design — blocking security conflict resolved per SECURITY-05 enforcement
+
+---
+
+## backend-api Functional Design — Artifacts Generated
+**Timestamp**: 2026-08-31T00:00:00Z
+**AI Response**: Generated 3 functional design artifacts at aidlc-docs/construction/backend-api/functional-design/: domain-entities.md (Store/AdminUser/Table/TableSession/Category/Menu/Order/OrderItem/OrderHistory/OrderHistoryItem/AuditLog/LoginAttempt + SQLite mapping + snapshot/audit rules), business-logic-model.md (per-service algorithms, transaction boundaries, order creation with server-side total re-validation, MAX+1 numbering, dashboard aggregation, atomic session completion, JWT auth, PBT Testable Properties §8), business-rules.md (input validation BR-VAL-*, state transitions, authz/IDOR BR-AUTHZ-*, auth/credential BR-AUTH-*, error mapping, audit rules, SECURITY compliance summary §9). frontend-components.md marked N/A (API-only service). Contract-impact notes: Menu.is_available field addition (minor) and TableCard.has_new server-not-computed — flagged for contract §9 propagation. SECURITY compliance: no blocking findings (SECURITY-05 Compliant via minimum bounds; documented exceptions: 테이블 PIN Q4=A, MFA N/A local MVP). PBT (Partial): properties identified per PBT-01, framework=Hypothesis (to be pinned in NFR Requirements). Updated plan checkboxes and aidlc-state.md (Functional Design marked complete). Proceeding to commit + push to remote branch 'backend' per user request.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / Functional Design — artifacts complete, committing
+
+---
+

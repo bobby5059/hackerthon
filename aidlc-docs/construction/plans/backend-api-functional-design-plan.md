@@ -9,14 +9,14 @@
 
 ## 1. 실행 체크리스트 (Functional Design Steps)
 
-- [ ] 유닛 컨텍스트 분석 (완료: unit-of-work / story-map / services / component-methods / integration-contract 로드)
-- [ ] 본 계획 + 명확화 질문 작성 (진행 중 — 본 파일)
-- [ ] 사용자 답변 수집 및 모호성 분석 (필요 시 follow-up 질문 파일 생성)
-- [ ] `functional-design/domain-entities.md` 생성 — 엔티티, 속성, 관계, SQLite 스키마 매핑, 스냅샷 규칙
-- [ ] `functional-design/business-logic-model.md` 생성 — 서비스별 알고리즘/오케스트레이션 상세(주문 생성, 대시보드 집계, 이용 완료 트랜잭션, 채번, 인증/토큰 발급·검증)
-- [ ] `functional-design/business-rules.md` 생성 — 검증 규칙, 상태 전이, 인가/IDOR, 총액 재검증, 에러 매핑, 감사 규칙(SECURITY 매핑 포함)
-- [ ] Security Baseline 적용성 평가 및 준수 요약 작성
-- [ ] 완료 메시지 제시 및 승인 대기
+- [x] 유닛 컨텍스트 분석 (완료: unit-of-work / story-map / services / component-methods / integration-contract 로드)
+- [x] 본 계획 + 명확화 질문 작성 (완료 — 본 파일)
+- [x] 사용자 답변 수집 및 모호성 분석 (Q11↔SECURITY-05 충돌 follow-up 해소 — 아래 §4 참조)
+- [x] `functional-design/domain-entities.md` 생성 — 엔티티, 속성, 관계, SQLite 스키마 매핑, 스냅샷 규칙
+- [x] `functional-design/business-logic-model.md` 생성 — 서비스별 알고리즘/오케스트레이션 상세(주문 생성, 대시보드 집계, 이용 완료 트랜잭션, 채번, 인증/토큰 발급·검증)
+- [x] `functional-design/business-rules.md` 생성 — 검증 규칙, 상태 전이, 인가/IDOR, 총액 재검증, 에러 매핑, 감사 규칙(SECURITY 매핑 포함)
+- [x] Security Baseline 적용성 평가 및 준수 요약 작성 (business-rules.md §9)
+- [x] 완료 메시지 제시 및 승인 대기
 
 > 참고: backend-api는 UI가 없는 API 서비스이므로 `frontend-components.md`는 **N/A**(생성하지 않음).
 
@@ -46,7 +46,7 @@ C) 역방향 1단계까지만 허용 — 실수 정정 목적(예: PREPARING→P
 
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: B
 
 ### Question 2 — 이용 완료 시 미완료 주문 처리
 `POST /api/tables/{id}/complete`(A3-S3) 시점에 아직 PENDING/PREPARING 상태인 주문이 남아 있을 수 있습니다. 이 주문들의 처리 방식은?
@@ -59,7 +59,7 @@ C) 미완료 주문을 자동으로 COMPLETED 처리한 뒤 이력으로 이동
 
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: B
 
 ### Question 3 — 주문 삭제 방식 및 감사 레코드
 `DELETE /api/orders/{id}`(A3-S2, 감사 로깅 SECURITY-13) 의 삭제 방식은?
@@ -70,7 +70,7 @@ B) Soft delete(`deleted_at`/`deleted_by` 플래그) — 대시보드·총액 집
 
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: B
 
 ### Question 4 — 테이블 비밀번호 정책 (SECURITY-12 예외 여부)
 SECURITY-12는 비밀번호 최소 8자를 요구하지만, 테이블 자동 로그인 비밀번호(`table_password`)는 태블릿 현장 편의상 짧은 PIN이 자연스럽습니다. 정책은?
@@ -81,7 +81,7 @@ B) 테이블 비번도 8자 이상 강제(SECURITY-12 일괄 적용)
 
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 5 — 활성 세션이 있는 테이블에 재-setup 호출 시
 `POST /api/tables/{id}/setup`(A3-S1) 을 이미 활성 세션이 있는 테이블에 다시 호출하면?
@@ -94,7 +94,7 @@ C) 활성 세션이 있으면 거부(409) — 먼저 이용 완료를 요구
 
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: C
 
 ### Question 6 — 주문번호 순번(NNN) 채번 방식
 `{store_id}-{YYYYMMDD}-{NNN}`(§6)의 일자별 순번을 채번하는 방식은? (SQLite, 동시성 고려)
@@ -105,7 +105,7 @@ B) 전용 시퀀스 테이블(store_id, date, last_seq)을 원자적으로 증�
 
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 7 — 테이블 세션 만료(16h) 도달 시 동작
 테이블 세션 TTL(≤16h) 만료 후 해당 테이블에서 요청이 오면?
@@ -116,7 +116,7 @@ B) 만료 시 서버가 자동으로 새 세션을 시작해 계속 사용(관�
 
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 8 — 시드 데이터 범위 (MVP/데모)
 초기 시드 데이터(단일 매장 전제, Q-inception)의 규모는?
@@ -127,7 +127,7 @@ B) 최소 세트 — 매장 1 + 관리자 1 + 테이블 2~3 + 메뉴 5 (스모�
 
 X) Other (please describe after [Answer]: tag below — 구체 수치 명시)
 
-[Answer]: 
+[Answer]: B
 
 ### Question 9 — 대시보드 신규 주문 강조(`has_new`) 계산 주체
 `TableCard.has_new`(신규 주문 강조)를 누가 계산하나요?
@@ -138,7 +138,7 @@ B) 서버가 직전 폴링 이후 신규 주문 여부를 계산해 `has_new`를
 
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ### Question 10 — 메뉴 가용성(품절) 개념 포함 여부
 메뉴에 품절/비활성 개념을 MVP에 포함하나요?
@@ -149,7 +149,7 @@ B) 포함 — `Menu.is_available` 토글, 품절 메뉴 주문 시 422/거부
 
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: B
 
 ### Question 11 — 입력 검증 상한 기본값 (SECURITY-05)
 주문 생성 등의 입력 상한(길이/크기 경계)은?
@@ -160,4 +160,19 @@ B) 타입 검증만 수행하고 별도 수치 상한은 두지 않음
 
 X) Other (please describe after [Answer]: tag below — 원하는 상한 값 명시)
 
-[Answer]: 
+[Answer]: B
+
+---
+
+## 4. 답변 후속 해소 (Follow-up Resolution)
+
+### Q11 ↔ SECURITY-05 충돌 해소
+Q11 답변 **B(수치 상한 없음)** 는 사용자가 활성화한 **Security Baseline / SECURITY-05**(블로킹) 및 Integration Contract §8(본문 크기 제한·입력 검증)과 직접 충돌.
+후속 질문 결과 **"보안 최소 상한 적용"**(권장)으로 확정:
+- SECURITY-05가 요구하는 최소 경계(문자열 max length, items 배열 최대 크기, quantity 상한, 요청 본문 크기 제한)만 적용.
+- 그 외 임의 비즈니스 캡(예: items 50개, qty 99개 등 Q11=A식 엄격 규칙)은 강제하지 않음.
+- 구체 수치는 NFR Design에서 확정. 규칙: `business-rules.md` §1(BR-VAL-01~07).
+- 결과: SECURITY-05 **Compliant**, 블로킹 보안 결함 없음.
+
+### 확정 답변 요약 (산출물 반영)
+Q1=B(자유 전이) · Q2=B(미완료 차단 409) · Q3=B(soft delete) · Q4=A(테이블 4~6자리 PIN 예외) · Q5=C(활성 세션 재-setup 거부 409) · Q6=A(트랜잭션 내 MAX+1 채번) · Q7=A(요청 시 만료검사, 재-setup 필요) · Q8=B(최소 시드) · Q9=A(has_new 서버 미계산) · Q10=B(메뉴 가용성 is_available) · Q11=보안 최소 상한.
