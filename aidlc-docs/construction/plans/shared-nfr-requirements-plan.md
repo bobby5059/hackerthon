@@ -57,28 +57,28 @@ PricingUtil PBT(NFR-T-01)와 단위 테스트에 쓸 도구는?
 - C. `tsc`만 사용(번들 없이 컴파일)
 - D. 기타
 
-[Answer]:
+[Answer]: A
 
 ### Q3. 모듈 포맷 타깃
 - A. ★ **ESM 전용** (customer/admin 모두 Vite/최신 번들러 소비 가정, 단순)
 - B. ESM + CJS 듀얼
 - C. 기타
 
-[Answer]:
+[Answer]:A
 
 ### Q4. React 버전 (peerDependency 범위, Q9=A)
 - A. ★ **React 18** (`peerDependencies: react ^18`)
 - B. React 19
 - C. 기타/범위 지정
 
-[Answer]:
+[Answer]:A
 
 ### Q5. TypeScript 엄격도
 - A. ★ **strict: true** (+ `noUncheckedIndexedAccess` 등 강화)
 - B. 기본 strict만
 - C. 기타
 
-[Answer]:
+[Answer]:A
 
 ### Q6. 성능/번들 예산 (성능 NFR)
 `shared`에 번들 사이즈 예산을 둘까요?
@@ -87,7 +87,7 @@ PricingUtil PBT(NFR-T-01)와 단위 테스트에 쓸 도구는?
 - C. 예산 없음
 - D. 기타
 
-[Answer]:
+[Answer]:A
 
 ### Q7. 린트/포맷
 - A. ★ **ESLint + Prettier** (+ typescript-eslint)
@@ -95,7 +95,7 @@ PricingUtil PBT(NFR-T-01)와 단위 테스트에 쓸 도구는?
 - C. 없음
 - D. 기타
 
-[Answer]:
+[Answer]:A
 
 ### Q8. OpenAPI 타입 생성 파이프라인 (Q1=B FD 결정 운영화)
 `openapi-typescript` 실행/스냅샷 관리는?
@@ -103,7 +103,7 @@ PricingUtil PBT(NFR-T-01)와 단위 테스트에 쓸 도구는?
 - B. 빌드 시 backend 라이브 `/openapi.json`에서 매번 생성(백엔드 가동 필요)
 - C. 기타
 
-[Answer]:
+[Answer]:A
 
 ### Q9. 테스트 커버리지/CI 목표
 - A. ★ **PricingUtil 100%(PBT 포함) + ApiClient/PollingHook 핵심 경로 단위테스트**, CI에서 lint+typecheck+test 실행(정량 전역 커버리지 게이트는 미설정)
@@ -111,7 +111,7 @@ PricingUtil PBT(NFR-T-01)와 단위 테스트에 쓸 도구는?
 - C. 최소한만(핵심 함수만)
 - D. 기타
 
-[Answer]:
+[Answer]:A
 
 ---
 
