@@ -320,3 +320,27 @@
 **Context**: CONSTRUCTION Phase / Unit 1 backend-api / NFR Requirements — approved (Step 8-9), committed; paused before NFR Design
 
 ---
+
+## backend-api NFR Design — Plan + Clarification Questions
+**Timestamp**: 2026-08-31T10:00:00Z
+**User Input**: "@aidlc-docs/aidlc-state.md 파일을 읽어서 현재 상태를 파악하고, Backend 의 NFR design 단계를 진행해 줘."
+**AI Response**: Resumed backend-api unit at NFR Design stage (Functional Design + NFR Requirements both APPROVED). Loaded prior artifacts: NFR Requirements (NFR-BE-*), tech-stack-decisions.md (Q1~Q12=A), business-logic-model.md, integration-contract.md v1.0. Since NFR/toolchain already pinned, NFR Design focuses on design patterns + logical components. Created plan at aidlc-docs/construction/plans/backend-api-nfr-design-plan.md with Steps 1-9 checklist and 6 embedded [Answer]: clarification questions evaluating all 5 mandated categories: (Q1) route execution model + per-request DB session lifecycle [Performance/Logical], (Q2) SQLite engine/connection pool + PRAGMA connect-hook [Logical], (Q3) SQLITE_BUSY / UNIQUE write-contention bounded-retry pattern [Resilience], (Q4) global error handler domain-exception taxonomy → HTTP mapping [Resilience/Security], (Q5) auth/authz FastAPI dependency chain (deny-by-default/typ/IDOR ownership) [Security], (Q6) in-memory login rate-limiter component design incl. memory bounding/eviction [Security/Logical]. Scalability declared N/A (single worker) in §4 without a question. §4 also pins non-negotiable design (middleware chain ordering, request_id contextvar propagation, input validation + body-size middleware, logging masking) inherited from NFR/contract. Each question has recommended option A/★. No contract §3/§4 change. Awaiting user answers before generating nfr-design-patterns.md + logical-components.md (Step 5-6).
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / NFR Design — Steps 1-4 complete (plan + questions), awaiting answers (Step 5)
+
+---
+
+## backend-api NFR Design — Answers + Artifacts Generated
+**Timestamp**: 2026-08-31T10:30:00Z
+**User Input**: "@aidlc-docs/aidlc-state.md 파일을 읽고, 다음 단계를 진행해 줘. @aidlc-docs/construction/plans/backend-api-nfr-design-plan.md 파일에 Answer 를 완료했어."
+**AI Response**: Read state + NFR Design plan. All 6 [Answer]: tags completed with recommended option A (Q1 route model: sync def + threadpool + per-request session; Q2 engine: single QueuePool + connect-hook PRAGMA WAL/foreign_keys/busy_timeout; Q3 write-contention: bounded retry 3x backoff 10/20/40ms then fail closed; Q4 error taxonomy: AppError domain-exception hierarchy → HTTP mapping + generic 500; Q5 auth/authz dependency chain get_claims→require_admin/table→get_store_scope→assert_owns_resource deny-by-default/IDOR; Q6 in-memory sliding-window rate limiter with lazy-remove+sweep+key-cap eviction, thread-safe). Step 5 ambiguity analysis: all concrete recommended options, no follow-up needed. Step 6 generated two artifacts: construction/backend-api/nfr-design/nfr-design-patterns.md (10 sections: route/session lifecycle, DB engine/pool/PRAGMA, write-contention retry, global error taxonomy, auth/authz dep chain, rate limiter, middleware chain+request_id contextvar+logging masking, performance, scalability N/A, Security Baseline compliance summary) and logical-components.md (11 cross-cutting components C1-C11 with responsibilities/config/traceability, middleware chain + login-path + write-txn + request_id flow diagrams, env params, NFR/SECURITY/contract traceability matrix). Security Baseline: no blocking findings; SECURITY 01/02/06/07 N/A (local). No contract §3(model)/§4(claims) change. Updated plan checkboxes Steps 5-7 [x]. Presented 2-option completion message; awaiting explicit approval (Step 8).
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / NFR Design — Steps 5-7 complete, awaiting approval (Step 8)
+
+---
+
+## backend-api NFR Design — Approval + Commit
+**Timestamp**: 2026-08-31T10:45:00Z
+**User Input**: "커밋하고, Code Generation 은 진행하지 마."
+**AI Response**: Recorded explicit approval of backend-api NFR Design (Step 8). Marked NFR Design [x] APPROVED in aidlc-state.md and updated Current Stage (backend-api NFR Design approved; Infrastructure Design = SKIP; Code Generation NOT started — user paused before Code Generation). Committing NFR Design artifacts (nfr-design-patterns.md, logical-components.md) + plan + state/audit updates on branch `backend`. Per user instruction, NOT proceeding to Code Generation stage.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / NFR Design — approved (Step 8-9), committed; paused before Code Generation
+
+---
