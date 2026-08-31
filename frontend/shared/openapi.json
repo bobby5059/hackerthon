@@ -1,0 +1,315 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Table Order Service API (contract snapshot)",
+    "version": "1.0.0",
+    "description": "Committed snapshot mirroring Integration Contract v1.0 (SSOT). Used by @table-order/shared to generate types offline. Update only via Integration Contract §9, then re-run `npm run gen:types`."
+  },
+  "servers": [{ "url": "/" }],
+  "paths": {
+    "/api/menu": {
+      "get": {
+        "operationId": "getMenu",
+        "responses": {
+          "200": {
+            "description": "Menu list",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MenuListResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders": {
+      "get": {
+        "operationId": "listOrders",
+        "responses": {
+          "200": {
+            "description": "Order list (polling)",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/OrderListResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tables/dashboard": {
+      "get": {
+        "operationId": "getDashboard",
+        "responses": {
+          "200": {
+            "description": "Table dashboard (polling)",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DashboardResponse" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "OrderStatus": {
+        "type": "string",
+        "enum": ["PENDING", "PREPARING", "COMPLETED"]
+      },
+      "Category": {
+        "type": "object",
+        "required": ["category_id", "name", "display_order"],
+        "properties": {
+          "category_id": { "type": "string" },
+          "name": { "type": "string" },
+          "display_order": { "type": "integer" }
+        }
+      },
+      "Menu": {
+        "type": "object",
+        "required": ["menu_id", "category_id", "name", "price", "description", "image_url"],
+        "properties": {
+          "menu_id": { "type": "string" },
+          "category_id": { "type": "string" },
+          "name": { "type": "string" },
+          "price": { "type": "integer" },
+          "description": { "type": "string" },
+          "image_url": { "type": ["string", "null"] }
+        }
+      },
+      "OrderItemInput": {
+        "type": "object",
+        "required": ["menu_id", "quantity"],
+        "properties": {
+          "menu_id": { "type": "string" },
+          "quantity": { "type": "integer", "minimum": 1 }
+        }
+      },
+      "OrderItem": {
+        "type": "object",
+        "required": ["menu_id", "name", "unit_price", "quantity", "line_amount"],
+        "properties": {
+          "menu_id": { "type": "string" },
+          "name": { "type": "string" },
+          "unit_price": { "type": "integer" },
+          "quantity": { "type": "integer" },
+          "line_amount": { "type": "integer" }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "required": ["order_id", "order_number", "table_id", "session_id", "status", "items", "total_amount", "created_at"],
+        "properties": {
+          "order_id": { "type": "string" },
+          "order_number": { "type": "string" },
+          "table_id": { "type": "string" },
+          "session_id": { "type": "string" },
+          "status": { "$ref": "#/components/schemas/OrderStatus" },
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/OrderItem" } },
+          "total_amount": { "type": "integer" },
+          "created_at": { "type": "string" }
+        }
+      },
+      "OrderPreview": {
+        "type": "object",
+        "required": ["order_id", "order_number", "created_at", "item_summary", "total_amount"],
+        "properties": {
+          "order_id": { "type": "string" },
+          "order_number": { "type": "string" },
+          "created_at": { "type": "string" },
+          "item_summary": { "type": "string" },
+          "total_amount": { "type": "integer" }
+        }
+      },
+      "TableCard": {
+        "type": "object",
+        "required": ["table_id", "table_no", "total_amount", "recent_orders", "has_new"],
+        "properties": {
+          "table_id": { "type": "string" },
+          "table_no": { "type": "string" },
+          "total_amount": { "type": "integer" },
+          "recent_orders": { "type": "array", "items": { "$ref": "#/components/schemas/OrderPreview" } },
+          "has_new": { "type": "boolean" }
+        }
+      },
+      "HistoryEntry": {
+        "type": "object",
+        "required": ["order_id", "order_number", "table_id", "items", "total_amount", "created_at", "completed_at"],
+        "properties": {
+          "order_id": { "type": "string" },
+          "order_number": { "type": "string" },
+          "table_id": { "type": "string" },
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/OrderItem" } },
+          "total_amount": { "type": "integer" },
+          "created_at": { "type": "string" },
+          "completed_at": { "type": "string" }
+        }
+      },
+      "PageMeta": {
+        "type": "object",
+        "required": ["page", "size", "total"],
+        "properties": {
+          "page": { "type": "integer" },
+          "size": { "type": "integer" },
+          "total": { "type": "integer" }
+        }
+      },
+      "StoreBrief": {
+        "type": "object",
+        "required": ["store_id", "name"],
+        "properties": {
+          "store_id": { "type": "string" },
+          "name": { "type": "string" }
+        }
+      },
+      "TableBrief": {
+        "type": "object",
+        "required": ["table_id", "table_no"],
+        "properties": {
+          "table_id": { "type": "string" },
+          "table_no": { "type": "string" }
+        }
+      },
+      "SessionBrief": {
+        "type": "object",
+        "required": ["session_id", "started_at"],
+        "properties": {
+          "session_id": { "type": "string" },
+          "started_at": { "type": "string" },
+          "expires_at": { "type": "string" }
+        }
+      },
+      "AdminLoginResponse": {
+        "type": "object",
+        "required": ["access_token", "token_type", "expires_at", "store"],
+        "properties": {
+          "access_token": { "type": "string" },
+          "token_type": { "type": "string", "enum": ["bearer"] },
+          "expires_at": { "type": "string" },
+          "store": { "$ref": "#/components/schemas/StoreBrief" }
+        }
+      },
+      "TableLoginResponse": {
+        "type": "object",
+        "required": ["access_token", "token_type", "expires_at", "table", "session"],
+        "properties": {
+          "access_token": { "type": "string" },
+          "token_type": { "type": "string", "enum": ["bearer"] },
+          "expires_at": { "type": "string" },
+          "table": { "$ref": "#/components/schemas/TableBrief" },
+          "session": { "$ref": "#/components/schemas/SessionBrief" }
+        }
+      },
+      "MenuListResponse": {
+        "type": "object",
+        "required": ["categories", "menus"],
+        "properties": {
+          "categories": { "type": "array", "items": { "$ref": "#/components/schemas/Category" } },
+          "menus": { "type": "array", "items": { "$ref": "#/components/schemas/Menu" } }
+        }
+      },
+      "OrderListResponse": {
+        "type": "object",
+        "required": ["items", "page_meta", "server_time"],
+        "properties": {
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/Order" } },
+          "page_meta": { "$ref": "#/components/schemas/PageMeta" },
+          "server_time": { "type": "string" }
+        }
+      },
+      "DashboardResponse": {
+        "type": "object",
+        "required": ["tables", "server_time"],
+        "properties": {
+          "tables": { "type": "array", "items": { "$ref": "#/components/schemas/TableCard" } },
+          "server_time": { "type": "string" }
+        }
+      },
+      "HistoryListResponse": {
+        "type": "object",
+        "required": ["items", "page_meta"],
+        "properties": {
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/HistoryEntry" } },
+          "page_meta": { "$ref": "#/components/schemas/PageMeta" }
+        }
+      },
+      "DeleteOrderResponse": {
+        "type": "object",
+        "required": ["deleted_order_id", "table_id", "table_total_amount"],
+        "properties": {
+          "deleted_order_id": { "type": "string" },
+          "table_id": { "type": "string" },
+          "table_total_amount": { "type": "integer" }
+        }
+      },
+      "CompleteSessionResponse": {
+        "type": "object",
+        "required": ["table_id", "archived_order_count", "completed_at", "table_total_amount"],
+        "properties": {
+          "table_id": { "type": "string" },
+          "archived_order_count": { "type": "integer" },
+          "completed_at": { "type": "string" },
+          "table_total_amount": { "type": "integer" }
+        }
+      },
+      "AdminLoginRequest": {
+        "type": "object",
+        "required": ["store_id", "username", "password"],
+        "properties": {
+          "store_id": { "type": "string" },
+          "username": { "type": "string" },
+          "password": { "type": "string" }
+        }
+      },
+      "TableLoginRequest": {
+        "type": "object",
+        "required": ["store_id", "table_no", "table_password"],
+        "properties": {
+          "store_id": { "type": "string" },
+          "table_no": { "type": "string" },
+          "table_password": { "type": "string" }
+        }
+      },
+      "CreateOrderRequest": {
+        "type": "object",
+        "required": ["items"],
+        "properties": {
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/OrderItemInput" } }
+        }
+      },
+      "UpdateStatusRequest": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": { "$ref": "#/components/schemas/OrderStatus" }
+        }
+      },
+      "TableSetupRequest": {
+        "type": "object",
+        "required": ["table_no", "table_password"],
+        "properties": {
+          "table_no": { "type": "string" },
+          "table_password": { "type": "string" }
+        }
+      },
+      "ApiErrorEnvelope": {
+        "type": "object",
+        "required": ["error"],
+        "properties": {
+          "error": {
+            "type": "object",
+            "required": ["code", "message", "request_id"],
+            "properties": {
+              "code": { "type": "string" },
+              "message": { "type": "string" },
+              "request_id": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
