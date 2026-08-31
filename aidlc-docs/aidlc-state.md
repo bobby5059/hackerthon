@@ -4,8 +4,8 @@
 - **Project Type**: Greenfield
 - **Project Name**: Table Order Service
 - **Start Date**: 2026-08-31T00:00:00Z
-- **Current Phase**: INCEPTION (COMPLETE) → CONSTRUCTION (pending, per-unit)
-- **Current Stage**: INCEPTION complete; Integration Contract authored (pre-construction bridge)
+- **Current Phase**: CONSTRUCTION (in progress, per-unit)
+- **Current Stage**: Unit `shared` — Functional Design + NFR Requirements complete (approved, PR #1); NFR Design pending
 
 ## Workspace State
 - **Existing Code**: No
@@ -39,8 +39,8 @@
 - [ ] Code Generation - EXECUTE
 
 #### Unit 2: shared
-- [ ] Functional Design - EXECUTE
-- [ ] NFR Requirements - EXECUTE
+- [x] Functional Design - EXECUTE (approved 2026-08-31; PR #1)
+- [x] NFR Requirements - EXECUTE (approved 2026-08-31; PR #1)
 - [ ] NFR Design - EXECUTE
 - [ ] Infrastructure Design - SKIP
 - [ ] Code Generation - EXECUTE
