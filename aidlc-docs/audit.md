@@ -313,3 +313,34 @@
 **Context**: CONSTRUCTION Phase / Unit shared / NFR Design — approved, pushing
 
 ---
+
+## CONSTRUCTION — Unit `shared` — Code Generation Part 1 (Plan) Created
+**Timestamp**: 2026-08-31T08:10:00Z
+**User Input**: "다음 단계 진행"
+**AI Response (shared owner)**: Synced main (537b7c1, PR #4 merged), created branch construction/shared-code-generation. Loaded construction/code-generation.md. Created Code Generation plan at aidlc-docs/construction/plans/shared-code-generation-plan.md (SSOT for generation). Unit is a frontend TS library → Repository Layer / Database Migration marked N/A; Deployment reduced to build config (tsup/package exports), CI YAML deferred to Build & Test. Numbered generation steps G1(structure+toolchain), G2(types: openapi snapshot + generated schema + index bootstrap layer), G3/G3T(pricing + PBT P1~P6), G4/G4T(api: ApiError+normalizeError+createApiClient factory, 10s timeout, no-retry, onUnauthorized/onError), G5/G5T(usePolling hook), G6/G6T(UiKit controlled + a11y + data-testid), G7(doc summary), G8(build artifacts note). Code location = frontend/shared/ (@table-order/shared); docs = aidlc-docs/construction/shared/code/. Story support map C1~C5/A1~A3. Security Baseline (SECURITY-03/04/08/10) + PBT(Partial) reflected. Marked Part-1 Steps 1-6 [x]. Presenting plan summary + standardized 2-option completion message; awaiting explicit approval before Part 2 generation.
+**Context**: CONSTRUCTION Phase / Unit shared / Code Generation Part 1 — plan created, awaiting approval
+
+---
+
+## CONSTRUCTION — Unit `shared` — Code Generation Part 1 Approved + Part 2 Start
+**Timestamp**: 2026-08-31T08:20:00Z
+**User Input**: "승인. 진행"
+**AI Response (shared owner)**: Code Generation plan approved (Continue to Next Stage). Marked Part-1 Steps 7-9 [x], aidlc-state Code Generation Part 1 complete. Beginning Part 2 generation at frontend/shared/ following plan steps G1~G8 in order, marking each [x] on completion. Application code → frontend/shared/; doc summary → aidlc-docs/construction/shared/code/.
+**Context**: CONSTRUCTION Phase / Unit shared / Code Generation Part 2 — generating
+
+---
+
+## CONSTRUCTION — Unit `shared` — Code Generation Part 2 Complete (generated + verified)
+**Timestamp**: 2026-08-31T08:45:00Z
+**AI Response (shared owner)**: Executed Code Generation Part 2 (plan G1~G8) at frontend/shared/ (@table-order/shared). Created: toolchain (package.json ESM+5 subpath exports, tsconfig strict, tsup, vitest, eslint no-console:error [SECURITY-03], prettier, gitignore/prettierignore, gen-types.mjs, README), types (openapi.json contract snapshot + generated/schema.ts via openapi-typescript 7.4.0 + hand-authored index.ts augmentation layer), pricing (lineTotal/cartTotal + PBT P1~P6), api (ApiError + normalizeError single module + createApiClient factory: 10s AbortController timeout+signal merge RP-01, no-retry RP-02, getToken SP-02, onError SP-01, onUnauthorized fail-closed RP-04), hooks (usePolling: 2s, useRef/useCallback/useReducer PP-02, visibility pause PP-04/RP-03, silent retry, cleanup, lastServerTime), ui (Button/Card/Modal[focus-trap/ESC/overlay]/Spinner[role=status]/ErrorBanner[role=alert] — stateless controlled MP-03, data-testid, safeImageUrl SP-03). Doc summary at aidlc-docs/construction/shared/code/code-summary.md. **Local verification (real npm install + run)**: `npm run typecheck` ✅ 0 errors (fixed 1 exactOptionalPropertyTypes issue in client.ts RequestInit.body); `npm test` ✅ 43/43 pass (fixed 2 PBT expression-body predicates → block bodies, 1 usePolling test waitFor↔fake-timers conflict); `npm run build` ✅ ESM+dts for all 5 entries; `npm run lint` ✅ (added .prettierignore); `npm run gen:types` + `git diff` ✅ 0 drift (MP-01 gate verified). Intentional deviations from plan: CSS Modules → typed inline style objects (tokens.ts) for zero-config ESM build; CI YAML deferred to Build & Test (plan G8). Marked plan Part-2 Steps 10-13 [x] + all G-step boxes [x]; updated aidlc-state (Code Generation [x], Infra SKIP [x]). Presenting standardized 2-option completion message; awaiting explicit approval.
+**Context**: CONSTRUCTION Phase / Unit shared / Code Generation Part 2 — generated + locally verified, awaiting approval
+
+---
+
+## CONSTRUCTION — Unit `shared` — Code Generation Approved + Commit/Push
+**Timestamp**: 2026-08-31T08:55:00Z
+**User Input**: "commit 및 push"
+**AI Response (shared owner)**: Code Generation approved (Continue to Next Stage). Marked plan Part-2 Steps 14-16 [x]; aidlc-state Code Generation [x] — Unit `shared` per-unit loop COMPLETE. Committing generated library (frontend/shared/, node_modules/dist gitignored) + doc summary + plan/state/audit to branch construction/shared-code-generation and pushing to origin.
+**Context**: CONSTRUCTION Phase / Unit shared / Code Generation — approved, committing & pushing
+
+---
