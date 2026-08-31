@@ -1,0 +1,36 @@
+# ---- Python (backend-api) ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.db
+*.sqlite
+*.sqlite3
+
+# ---- Node / frontend (customer-web, admin-web, shared) ----
+node_modules/
+dist/
+build/
+.vite/
+*.local
+coverage/
+
+# ---- Env & secrets ----
+.env
+.env.*
+!.env.example
+
+# ---- Editor / OS ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+
+# ---- Claude Code local settings ----
+.claude/settings.local.json
