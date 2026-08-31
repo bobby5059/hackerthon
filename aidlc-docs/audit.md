@@ -216,3 +216,36 @@
 
 ---
 
+## CONSTRUCTION — Unit `shared` — Functional Design Complete / Approval + Git Push + PR
+**Timestamp**: 2026-08-31T06:40:00Z
+**AI Response**: Generated 4 Functional Design artifacts in aidlc-docs/construction/shared/functional-design/ (domain-entities.md, business-logic-model.md, business-rules.md, frontend-components.md). Marked plan Steps 5-7 [x]. Presented 2-option completion message. Security Baseline applicability: SECURITY-03/04/08/10/15 reflected; SECURITY-01/06/07/14 N/A (infra/backend); no blocking findings. Committed to branch construction/shared-functional-design (26d8803), pushed to origin (after collaborator access granted), opened PR #1 (https://github.com/bobby5059/hackerthon/pull/1).
+**User Response**: "1번" (선택: AI-DLC 다음 단계 진행 — Functional Design 승인 후 NFR Requirements 시작). = Approve Functional Design.
+**Status**: Functional Design APPROVED for unit shared.
+**Context**: CONSTRUCTION Phase / Unit shared / Functional Design — approved; proceeding to NFR Requirements
+
+---
+
+## CONSTRUCTION — Unit `shared` — NFR Requirements Start
+**Timestamp**: 2026-08-31T06:41:00Z
+**AI Response**: Marked Functional Design [x] for unit shared in aidlc-state.md. Loaded construction/nfr-requirements.md rule. Beginning NFR Requirements: created plan with embedded [Answer] questions (tech stack for a TS library — test/PBT framework, build tool, module format, React/TS versions, tooling). PBT extension = Partial (fast-check for PricingUtil per NFR-T-01). Awaiting user answers.
+**Context**: CONSTRUCTION Phase / Unit shared / NFR Requirements — plan + questions created, awaiting answers
+
+---
+
+## CONSTRUCTION — Unit `shared` — NFR Requirements Answers & Generation
+**Timestamp**: 2026-08-31T06:55:00Z
+**User Input**: "3" (선택: 전부 추천안(★)으로 진행) → Q1~Q9 = A. (Vitest+fast-check, tsup, ESM-only, React ^18 peerDep, TS strict, soft bundle budget, ESLint+Prettier, committed openapi snapshot + gen:types, PricingUtil 100%+core paths CI).
+**AI Response**: Reviewed — all decisive (recommended options). No ambiguity. Generated NFR artifacts: construction/shared/nfr-requirements/nfr-requirements.md and tech-stack-decisions.md. Marked plan Steps 5-7 [x]. Security Baseline: SECURITY-03/04/08/10 reflected, 01/02/06/07/14 N/A; no blocking findings. Presenting 2-option completion message.
+**Context**: CONSTRUCTION Phase / Unit shared / NFR Requirements — artifacts generated, awaiting approval
+
+---
+
+## CONSTRUCTION — Unit `shared` — NFR Requirements Approved / Push
+**Timestamp**: 2026-08-31T07:00:00Z
+**User Response**: "승인한다. github에 push" = Approve NFR Requirements + push to remote.
+**Status**: NFR Requirements APPROVED for unit shared.
+**AI Response**: Marked NFR Requirements [x] in aidlc-state.md (next: NFR Design). Committing NFR artifacts + plan + state/audit updates to branch construction/shared-functional-design and pushing to origin (updates PR #1).
+**Context**: CONSTRUCTION Phase / Unit shared / NFR Requirements — approved; git push; next stage NFR Design
+
+---
+
