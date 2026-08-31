@@ -198,3 +198,21 @@
 **AI Response**: Integration Contract complete. Proceeding to git setup: verify git state, add .gitignore, stage all AI-DLC artifacts (CLAUDE.md, .aidlc-rule-details/, aidlc-docs/), commit, add remote origin https://github.com/bobby5059/hackerthon.git, push. Explicitly authorized outward-facing action.
 **Context**: Git repository setup and push to external remote (user-authorized)
 
+---
+
+## CONSTRUCTION — Unit `shared` — Kickoff & Approach Selection
+**Timestamp**: 2026-08-31T06:00:00Z
+**User Input**: "나는 consturction 단계에서 shared를 담당한다." → (approach question) Selected: "정식 AI-DLC 루프" (full AI-DLC per-unit loop).
+**AI Response**: Cloned repo analyzed. User owns the `shared` unit (Unit 2 of 4) in CONSTRUCTION. `shared` is unblocked because Integration Contract v1.0 (SSOT) is finalized. Confirmed per-unit loop for shared: Functional Design → NFR Requirements → NFR Design → [Infrastructure Design = SKIP] → Code Generation, each with an approval gate. Extensions in effect: Security Baseline (Yes), PBT (Partial — applies to PricingUtil pure functions per NFR-T-01), Resiliency (No). Starting Functional Design Part: created plan with embedded [Answer] questions.
+**Context**: CONSTRUCTION Phase / Unit shared / Functional Design — plan + questions created, awaiting user answers
+
+---
+
+## CONSTRUCTION — Unit `shared` — Functional Design Answers
+**Timestamp**: 2026-08-31T06:20:00Z
+**User Input**: "완료" (shared-functional-design-plan.md의 [Answer] 태그 작성 완료). Answers: Q1=B (openapi-typescript 자동 생성 — 추천안 A와 다름); Q2=A (네이티브 fetch); Q3=A (토큰 프로바이더 콜백 주입); Q4=A (정규화 ApiError 클래스); Q5=A (탭 가시성 일시정지 + 재활성 즉시 fetch + 조용한 재시도); Q6=A (PollingHook가 lastServerTime 노출, 신규 판단은 소비 컴포넌트); Q7=A (금액 경계 검증 + PBT 속성); Q8=A (CSS Modules + 디자인 토큰, 컴포넌트 5종); Q9=A (React peerDependency, 순수 TS 계층 분리); Q10=A (서브경로 export).
+**AI Response**: Reviewed all 10 answers — no vague/ambiguous responses; all decisive. Q1=B (auto-gen) noted with practical implication: requires backend /openapi.json at codegen time → design uses a committed openapi snapshot + hand-authored augmentation layer (ApiError class, OrderStatus display labels 대기중/준비중/완료, and any frontend-only view types not present in the schema). No blocking follow-up needed. Proceeding to generate 4 Functional Design artifacts.
+**Context**: CONSTRUCTION Phase / Unit shared / Functional Design — answers validated, generating artifacts
+
+---
+
