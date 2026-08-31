@@ -5,7 +5,8 @@
 - **Project Name**: Table Order Service
 - **Start Date**: 2026-08-31T00:00:00Z
 - **Current Phase**: CONSTRUCTION (in progress, per-unit)
-- **Current Stage**: Unit `shared` — Functional Design + NFR Requirements complete (approved, PR #1); NFR Design pending
+- **Current Stage**: Unit `shared` — Functional Design + NFR Requirements complete (approved, PR #1); NFR Design pending. Unit 1 (backend-api) → Functional Design (in progress — plan + questions authored, awaiting answers)
+- **Execution Mode**: PARALLEL (2026-08-31) — 4 units developed concurrently by separate owners against Integration Contract v1.0 (SSOT). Original strict sequential order relaxed; contract is the coordination boundary (see unit-of-work-dependency.md §4). This owner: backend-api.
 
 ## Workspace State
 - **Existing Code**: No
@@ -32,7 +33,7 @@
 **Units (4, order)**: 1) backend-api  2) shared  3) customer-web  4) admin-web
 
 #### Unit 1: backend-api
-- [ ] Functional Design - EXECUTE
+- [~] Functional Design - EXECUTE (in progress: plan + questions authored, awaiting answers)
 - [ ] NFR Requirements - EXECUTE
 - [ ] NFR Design - EXECUTE
 - [ ] Infrastructure Design - SKIP (local dev only, no cloud/IaC)

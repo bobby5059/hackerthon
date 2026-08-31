@@ -200,6 +200,14 @@
 
 ---
 
+## CONSTRUCTION Start — Parallel Execution Decision + backend-api Functional Design
+**Timestamp**: 2026-08-31T00:00:00Z
+**User Input**: "backend-api, shared, customer-web, admin-web 을 병렬로 진행할거야. 내가 backend-api 담당인데, construction 단계를 시작해 줘."
+**AI Response**: Recorded workflow change — units now proceed in PARALLEL (each owner works their unit against the confirmed Integration Contract v1.0 as SSOT) instead of the original strict sequential order. This is safe because unit dependencies are on the confirmed contract, not on completed peer code (unit-of-work-dependency.md §4). Starting CONSTRUCTION per-unit loop for Unit 1 (backend-api), first stage = Functional Design (EXECUTE). Loaded context: functional-design.md rules, unit-of-work.md, unit-of-work-story-map.md, component-methods.md, services.md, integration-contract.md, security-baseline.md (enabled), question-format-guide.md, depth-levels.md. Creating functional design plan with embedded [Answer]: questions at aidlc-docs/construction/plans/backend-api-functional-design-plan.md.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / Functional Design — plan + questions authored, awaiting user answers
+
+---
+
 ## CONSTRUCTION — Unit `shared` — Kickoff & Approach Selection
 **Timestamp**: 2026-08-31T06:00:00Z
 **User Input**: "나는 consturction 단계에서 shared를 담당한다." → (approach question) Selected: "정식 AI-DLC 루프" (full AI-DLC per-unit loop).
