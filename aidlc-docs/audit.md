@@ -289,3 +289,34 @@
 
 ---
 
+## backend-api Functional Design — Approval to Proceed
+**Timestamp**: 2026-08-31T08:00:00Z
+**User Input**: "@aidlc-docs/aidlc-state.md 를 읽고, backend unit 의 구현 작업을 계속해 줘."
+**AI Response**: Interpreted as approval of backend-api Functional Design (artifacts were complete, awaiting approval). Marked Functional Design [x] APPROVED in aidlc-state.md and advanced Current Stage to NFR Requirements (in progress). Proceeding to NFR Requirements stage per per-unit CONSTRUCTION loop.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / Functional Design — approved; advancing to NFR Requirements
+
+---
+
+## backend-api NFR Requirements — Plan + Clarification Questions
+**Timestamp**: 2026-08-31T08:00:00Z
+**AI Response**: Created NFR Requirements plan at aidlc-docs/construction/plans/backend-api-nfr-requirements-plan.md with checklist (Steps 1-9) and 12 embedded [Answer]: clarification questions covering tech stack (web framework, Python version, SQLite access layer, migrations, SQLite concurrency PRAGMAs), auth toolchain (JWT lib, password hashing, rate-limit implementation + concrete threshold/window), SECURITY-05 concrete input-validation bounds deferred from Functional Design (items array max, quantity ceiling, string max lengths, request body size limit), performance/scalability targets (single store, single worker, polling ~2s, response-time target), testing (pytest + Hypothesis PBT Partial + httpx, coverage strategy aligned with shared), logging (structured JSON + request_id), and CORS/security-header middleware. Each question has a recommended option (A/★). Awaiting user answers before generating nfr-requirements.md + tech-stack-decisions.md.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / NFR Requirements — Steps 2-4 complete (plan + questions), awaiting answers (Step 5)
+
+---
+
+
+## backend-api NFR Requirements — Answers Collected + Artifacts Generated
+**Timestamp**: 2026-08-31T09:00:00Z
+**User Input**: "@aidlc-docs/aidlc-state.md 파일을 읽고, 다음 작업을 진행해 줘. @aidlc-docs/construction/plans/backend-api-nfr-requirements-plan.md 의 작성을 완료했어."
+**AI Response**: Read plan; all 12 [Answer]: tags completed with recommended option A. Step 5 ambiguity analysis: no vague/ambiguous answers (all concrete recommended options) — no follow-up questions needed. Step 6 generated two artifacts: construction/backend-api/nfr-requirements/nfr-requirements.md (performance p95<300ms + polling 2s; scalability/availability N/A single-worker local; reliability atomic transactions + SQLite WAL/FK/busy_timeout; security JWT-per-request/bcrypt/rate-limit 5-per-5min-429/input bounds items≤100·qty1..999·body≤1MB/CORS explicit origins/JSON logging+request_id/dep-lock; maintainability ruff+mypy+layered; PBT-Partial pytest+Hypothesis+httpx; data Asia/Seoul+integer KRW) and tech-stack-decisions.md (FastAPI+Uvicorn+Pydantic v2, Python 3.12, SQLAlchemy 2.0, create-tables+seed no-Alembic, PyJWT HS256, passlib[bcrypt], in-memory sliding-window rate limit, env config incl JWT_SECRET/CORS_ORIGINS, project tree under backend/). Security Baseline compliance summary: no blocking findings; SECURITY-05 bounds now concrete (resolves FD deferral); SECURITY-10 dep-lock/vuln-scan confirmed. No contract §3/§4 change. Updated plan checkboxes Steps 5-7 [x]. Presented 2-option completion message; awaiting explicit approval (Step 8).
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / NFR Requirements — Steps 5-7 complete, awaiting approval
+
+---
+
+## backend-api NFR Requirements — Approval + Commit
+**Timestamp**: 2026-08-31T09:30:00Z
+**User Input**: "NFR Requirements 를 승인하고, 커밋해 줘. Design 단계로는 진행하지 마."
+**AI Response**: Recorded explicit approval of backend-api NFR Requirements (Step 8). Marked NFR Requirements [x] APPROVED in aidlc-state.md and updated Current Stage (backend-api NFR Requirements approved; NFR Design not yet started — user paused before Design). Committing NFR Requirements artifacts + plan + state/audit updates on branch `backend`. Per user instruction, NOT proceeding to NFR Design stage.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / NFR Requirements — approved (Step 8-9), committed; paused before NFR Design
+
+---
