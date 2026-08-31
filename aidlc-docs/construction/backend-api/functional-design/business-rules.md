@@ -63,7 +63,6 @@ PENDING ⇄ PREPARING ⇄ COMPLETED   (관리자, 매장 범위 내 임의 전�
 | BR-ORD-02 | store/table/session은 **토큰에서만 도출**(요청 본문 무시) | 서버 강제 | SECURITY-08 |
 | BR-ORD-03 | 총액은 서버가 Σ(단가×수량) **재검증**. 클라 총액 신뢰 안 함. (클라가 총액 전달 시) 불일치 → 422 TOTAL_MISMATCH | 422 | 계약 §2.3, C4-S1 |
 | BR-ORD-04 | 존재하지 않는 menu_id(매장 범위 밖 포함) → 422(또는 400 VALIDATION) | 422/400 | — |
-| BR-ORD-05 | **품절 메뉴(is_available=false) 주문 → 422**(Q10=B) | 422 | — |
 | BR-ORD-09 | 단가·명칭은 주문 시점 **스냅샷** 보존. 이후 메뉴 변경과 무관하게 이력 일관 | 불변 | 계약 §3.3 |
 | BR-ORD-10 | 실패 시 주문 **미생성**(부분 저장 금지) | rollback | SECURITY-15, C4-S3 |
 
@@ -113,7 +112,7 @@ PENDING ⇄ PREPARING ⇄ COMPLETED   (관리자, 매장 범위 내 임의 전�
 |---|---|---|
 | BR-DASH-01 | `TableCard.recent_orders`는 최신 3건(created_at 내림차순, soft-delete 제외). `item_summary` 축약: "대표메뉴명 외 N건" | 계약 §2.4 |
 | BR-DASH-02 | `TableCard.total_amount`는 활성 세션 유효 주문 Σ(soft-delete 제외) | 계약 §2.4 |
-| BR-DASH-03 | **`has_new`는 서버가 계산하지 않음**(Q9=A): 항상 false 또는 생략. 클라가 server_time/created_at 비교로 신규 판단 | 계약 §5.1 |
+| BR-DASH-03 | **`has_new`는 서버가 계산하지 않음**(Q9=A): 응답에 **항상 `false`로 포함**(생략 금지 — `shared` 필수 필드). 클라가 server_time/created_at 비교로 신규 판단 | 계약 §5.1 |
 | BR-DASH-04 | 대시보드/주문 목록은 **폴링 전체 조회**(계약 §5.1, Q4=A). 응답에 server_time(Asia/Seoul) 포함 | NFR-P-01 |
 | BR-HIST-01 | 이력은 세션 종료 시 유효 주문 스냅샷 이관, session_id 그룹화, completed_at 기록 | NFR-D-01 |
 | BR-HIST-02 | 이력 조회 정렬: completed_at 역순. 날짜 필터는 completed_at 기준 | 계약 §2.5 |
@@ -131,9 +130,9 @@ PENDING ⇄ PREPARING ⇄ COMPLETED   (관리자, 매장 범위 내 임의 전�
 | 토큰/세션 만료 | 401 | TOKEN_EXPIRED |
 | typ 불일치·소유권 위반(인가) | 403 | FORBIDDEN |
 | 리소스 없음(또는 은닉) | 404 | NOT_FOUND |
-| 활성 세션 재-setup(Q5=C) / 미완료 주문 있는 이용완료(Q2=B) / 종료 세션 주문 | 409 | CONFLICT / SESSION_CLOSED |
+| 활성 세션 재-setup(Q5=C) / 미완료 주문 있는 이용완료(Q2=B) / 종료 세션 주문 | 409 | SESSION_CLOSED |
 | 총액 불일치 | 422 | TOTAL_MISMATCH |
-| 품절 메뉴/유효하지 않은 menu_id(의미 검증) | 422 | (VALIDATION 계열, 예: MENU_UNAVAILABLE) |
+| 유효하지 않은 menu_id(의미 검증) | 422 | VALIDATION_ERROR |
 | 로그인 시도 제한 | 429 | RATE_LIMITED |
 | 예기치 못한 오류 | 500 | INTERNAL_ERROR |
 

@@ -3,7 +3,7 @@
 > CONSTRUCTION / Unit 1 (backend-api) / Functional Design
 > 기술 중립 도메인 모델 + SQLite 스키마 매핑 + 스냅샷/감사 규칙.
 > 계약 정합성 기준: `integration-contract.md` v1.0 §3(공유 모델). 응답 직렬화 필드명·타입은 계약을 따른다.
-> 확정 답변 반영: Q1=B(자유 전이), Q2=B(미완료 차단), Q3=B(soft delete), Q4=A(테이블 PIN 예외), Q5=C(활성 세션 재-setup 거부), Q6=A(트랜잭션 내 max+1 채번), Q7=A(요청 시 만료검사), Q8=B(최소 시드), Q9=A(has_new 서버 미계산), Q10=B(메뉴 가용성), Q11=보안 최소 상한.
+> 확정 답변 반영: Q1=B(자유 전이), Q2=B(미완료 차단), Q3=B(soft delete), Q4=A(테이블 PIN 예외), Q5=C(활성 세션 재-setup 거부), Q6=A(트랜잭션 내 max+1 채번), Q7=A(요청 시 만료검사), Q8=B(최소 시드), Q9=A(has_new 서버 미계산), Q10=A(메뉴 가용성 미도입 — shared·계약 v1.0 정합, 요구사항 §5 재고관리 제외 범위), Q11=보안 최소 상한.
 
 ---
 
@@ -96,9 +96,8 @@ TableSession 1───* OrderHistory 1───* OrderHistoryItem   (세션 종
 | price | int | not null, ≥ 0 | 단가(정수 KRW) |
 | description | string | nullable, ≤ 500자 | 설명 |
 | image_url | string | nullable | 이미지 URL |
-| is_available | boolean | not null, default true | **가용성(Q10=B)**. false=품절/비활성 |
 
-- **가용성(Q10=B)**: `is_available=false` 메뉴는 주문 불가(business-rules.md BR-ORD-05, 422 거부). 계약 응답 모델 `Menu`에 `is_available` 필드 추가(계약 §3.2 확장 — 하위호환 minor, §9 절차로 반영 대상).
+- **가용성 개념 미도입(Q10=A)**: 계약 §3.2 `Menu` 및 `shared` 미러 타입에 없고, 요구사항 §5에서 재고 관리가 제외 범위이므로 `is_available` 등 가용성/품절 필드를 두지 않는다. 계약 §3.2와 필드 완전 일치.
 - 메뉴는 고정/시드(Q7). 관리자 CRUD는 범위 외.
 
 ### 2.7 Order (주문 — 현재 세션)
@@ -131,7 +130,7 @@ TableSession 1───* OrderHistory 1───* OrderHistoryItem   (세션 종
 | quantity | int | not null, ≥ 1 | 수량 |
 | line_amount | int | not null | `unit_price × quantity` |
 
-- **스냅샷 규칙(계약 §3.3)**: 주문 생성 시점의 `name`·`unit_price`를 복사 보존. 이후 메뉴 변경(가격/이름/품절)과 무관하게 주문·이력 일관성 유지.
+- **스냅샷 규칙(계약 §3.3)**: 주문 생성 시점의 `name`·`unit_price`를 복사 보존. 이후 메뉴 변경(가격/이름 등)과 무관하게 주문·이력 일관성 유지.
 
 ### 2.9 OrderHistory (과거 주문 — 이관본)
 | 속성 | 타입 | 제약 | 설명 |
@@ -209,7 +208,7 @@ LoginAttemptType  = "ADMIN" | "TABLE"
 |---|---|---|
 | string(ID/이름/URL) | TEXT | |
 | int(금액/수량/순번) | INTEGER | 금액은 정수 KRW |
-| boolean | INTEGER(0/1) | is_available, auto_login_enabled, success |
+| boolean | INTEGER(0/1) | auto_login_enabled, success |
 | datetime(+09:00) | TEXT(ISO8601) | Asia/Seoul 오프셋 포함 저장(NFR-D-03) |
 | date | TEXT(YYYY-MM-DD) | order_date 채번 기준 |
 | enum | TEXT + CHECK 제약 | 허용값 제한 |
@@ -226,15 +225,13 @@ LoginAttemptType  = "ADMIN" | "TABLE"
 | 항목 | 계약 §3 모델 | 본 설계 매핑 | 비고 |
 |---|---|---|---|
 | Category | category_id, name, display_order | Category | 일치 |
-| Menu | menu_id, category_id, name, price, description, image_url | Menu + `is_available` | **확장 필드 `is_available` 추가(Q10=B)** — 계약 §9 minor 반영 대상 |
+| Menu | menu_id, category_id, name, price, description, image_url | Menu | 일치(가용성 필드 미도입, Q10=A) |
 | OrderItem | menu_id, name, unit_price, quantity, line_amount | OrderItem | 일치(스냅샷) |
 | Order | order_id, order_number, table_id, session_id, status, items, total_amount, created_at | Order(내부 order_seq/order_date/soft-delete 필드는 응답 비노출) | 일치 |
-| TableCard | table_id, table_no, total_amount, recent_orders, has_new | 집계 뷰(엔티티 아님) | **`has_new`는 서버 미계산(Q9=A)** — 생략 또는 항상 false |
+| TableCard | table_id, table_no, total_amount, recent_orders, has_new | 집계 뷰(엔티티 아님) | **`has_new`는 서버 미계산(Q9=A)** — 서버가 계산하지 않되 응답에는 **항상 `false`로 포함**(생략 안 함). `shared` 타입이 필수 필드로 요구 |
 | HistoryEntry | order_id, order_number, table_id, items, total_amount, created_at, completed_at | OrderHistory(+Item) | 일치 |
 | PageMeta | page, size, total | 조회 응답 메타 | 일치 |
 
-**계약 반영 필요(§9 변경 절차 대상)**:
-1. `Menu.is_available` 필드 추가 (하위호환 minor).
-2. `TableCard.has_new`는 서버가 세팅하지 않음(항상 false 또는 생략) — 문구 명확화.
-
-> 위 2건은 backend-api OpenAPI에 반영 → `shared` 타입 동기화 순으로 전파(계약 §9).
+**계약 정합성 요약**: 본 설계는 계약 v1.0 §3 및 `shared` 미러 타입과 **완전 일치**한다. 별도의 계약 §9 변경(필드/코드 확장)은 없다.
+- `Menu`: 가용성/품절 필드를 도입하지 않음(Q10=A) — 계약·`shared`·요구사항 §5(재고관리 제외)와 정합.
+- `TableCard.has_new`: 서버는 신규 판단 로직을 두지 않으나(Q9=A), `shared`가 필수 필드로 요구하므로 응답에 **항상 `false`를 포함**한다(생략 금지). 신규 강조는 클라이언트가 `created_at`/`server_time` 비교로 수행(계약 §5.1).

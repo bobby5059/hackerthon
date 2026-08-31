@@ -281,3 +281,11 @@
 
 ---
 
+## backend-api — Rebase onto main + Conceptual Reconciliation with `shared`
+**Timestamp**: 2026-08-31T00:00:00Z
+**User Input**: "1. main branch 에 shared unit 의 기능 구현이 일부 진행되었어. Rebase 할건데, 현재의 backend-api 와 비교했을 때 개념적으로 정합성이 맞지 않는 부분이 있는 것 같아. 정합성이 맞지 않는 부분을 shared 쪽을 우선해서 해소하고, 애매한 부분은 모두 질문해 줘. 2. Rebase 가 완료된 상황을 backend 에 추가 커밋으로 얹고, remote 의 backend branch 에 push 해 줘."
+**AI Response**: Rebased branch `backend` (backend-api Functional Design, 2 commits) onto `main` (which now contains `shared` FD + NFR Requirements, PRs #1/#2). Resolved git conflicts in aidlc-state.md (merged Current Stage: shared complete + backend-api FD complete) and audit.md (append-only: kept both units' entries). Reviewed conceptual consistency backend-api ↔ shared against Integration Contract v1.0. Findings surfaced; ambiguous points asked via question (AskUserQuestion). **User decisions**: (Q-menu-availability) "backend에서 제거 (shared 우선)"; (Q-409-code) "SESSION_CLOSED 재사용". Applied reconciliation (shared preferred): (1) **Q10 reverted B→A** — removed Menu.is_available field, sold-out 422 rule (former BR-ORD-05), MENU_UNAVAILABLE code across domain-entities/business-logic-model/business-rules; rationale: absent from contract v1.0 §3 & shared mirror, and requirements §5 excludes inventory mgmt → now fully matches contract §3.2 (no §9 change). (2) **409 conflict code = SESSION_CLOSED** (reuse contract-defined code; contract code set unchanged). (3) **has_new always included as false** (never omitted) — shared TableCard requires the field; server still does not compute newness (Q9=A). Updated plan summary, aidlc-state.md Current Stage note. Committing reconciliation as an additional commit on `backend` and pushing to origin/backend per request.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / Functional Design — rebased + reconciled with shared; committing & pushing to origin/backend
+
+---
+

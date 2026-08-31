@@ -65,10 +65,10 @@
 ### 3.1 list_menu(store_id) → {categories, menus}
 ```
 1. categories = MenuRepository.list_categories(store_id)  # display_order asc
-2. menus = MenuRepository.list_menus(store_id)            # is_available 포함(Q10=B)
+2. menus = MenuRepository.list_menus(store_id)            # 계약 §3.2 Menu 필드 그대로
 3. return {categories, menus}   # 계약 §2.2 GET /api/menu
 ```
-- 매장 범위 스코프. 품절 메뉴도 목록에는 포함하되 `is_available=false`로 표시(클라이언트가 담기 비활성).
+- 매장 범위 스코프. 가용성/품절 개념 없음(Q10=A) — 모든 시드 메뉴가 주문 가능.
 
 ### 3.2 get_menu(store_id, menu_id) → Menu | 404
 - 매장 범위 조회. 없으면 404 NOT_FOUND(소유권 없어도 404로 은닉, 계약 §1.3).
@@ -91,7 +91,6 @@
      for each input item:
         menu = MenuRepository.get_menu(store_id, item.menu_id)
         - menu 없음 → 422 (또는 400 VALIDATION) 유효하지 않은 menu_id (BR-ORD-04)
-        - menu.is_available == false → 422 (품절, BR-ORD-05)
         line_amount = menu.price * item.quantity      # 서버 단가 사용
         snapshot(name=menu.name, unit_price=menu.price, quantity, line_amount)
 4. total_amount = Σ line_amount                        # 서버 재검증(클라 총액 신뢰 안 함)
@@ -199,12 +198,12 @@ return OrderRepository.sum_table_total(store_id, table_id)
      recent = OrderRepository.recent_orders(store_id, session_id, limit=3, deleted 제외)
               → OrderPreview[] (order_number, created_at, item_summary, total_amount)
      card = TableCard{table_id, table_no, total_amount:total, recent_orders:recent,
-                      has_new:false}   # Q9=A: 서버 미계산(클라가 server_time/created_at 비교)
+                      has_new:false}   # Q9=A: 서버 미계산이나 항상 false로 포함(생략 금지, shared 필수 필드)
 3. server_time = now_kst()
 4. return {tables:[TableCard], server_time}
 ```
 - `item_summary` 축약 규칙: 대표 메뉴명 + 외 N건(예: "김치찌개 외 2건") — business-rules.md BR-DASH-01.
-- **has_new(Q9=A)**: 서버는 계산하지 않음(항상 false 또는 생략). 클라이언트가 `created_at > 직전 폴링 server_time`으로 신규 판단(계약 §5.1).
+- **has_new(Q9=A)**: 서버는 신규 판단 로직을 두지 않으나 응답에는 **항상 `false`를 포함**한다(생략 금지 — `shared` TableCard가 필수 필드로 요구). 클라이언트가 `created_at > 직전 폴링 server_time`으로 신규 판단(계약 §5.1).
 
 ### 5.4 complete_session(store_id, table_id) → CompleteResult  [A3-S3]
 **트랜잭션 경계: 이력 이관 + 세션 종료 + 총액 리셋 단일 원자 트랜잭션(fail closed).**
