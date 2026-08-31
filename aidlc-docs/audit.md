@@ -297,6 +297,21 @@
 
 ---
 
+## backend-api Functional Design — Approval to Proceed
+**Timestamp**: 2026-08-31T08:00:00Z
+**User Input**: "@aidlc-docs/aidlc-state.md 를 읽고, backend unit 의 구현 작업을 계속해 줘."
+**AI Response**: Interpreted as approval of backend-api Functional Design (artifacts were complete, awaiting approval). Marked Functional Design [x] APPROVED in aidlc-state.md and advanced Current Stage to NFR Requirements (in progress). Proceeding to NFR Requirements stage per per-unit CONSTRUCTION loop.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / Functional Design — approved; advancing to NFR Requirements
+
+---
+
+## backend-api NFR Requirements — Plan + Clarification Questions
+**Timestamp**: 2026-08-31T08:00:00Z
+**AI Response**: Created NFR Requirements plan at aidlc-docs/construction/plans/backend-api-nfr-requirements-plan.md with checklist (Steps 1-9) and 12 embedded [Answer]: clarification questions covering tech stack (web framework, Python version, SQLite access layer, migrations, SQLite concurrency PRAGMAs), auth toolchain (JWT lib, password hashing, rate-limit implementation + concrete threshold/window), SECURITY-05 concrete input-validation bounds deferred from Functional Design (items array max, quantity ceiling, string max lengths, request body size limit), performance/scalability targets (single store, single worker, polling ~2s, response-time target), testing (pytest + Hypothesis PBT Partial + httpx, coverage strategy aligned with shared), logging (structured JSON + request_id), and CORS/security-header middleware. Each question has a recommended option (A/★). Awaiting user answers before generating nfr-requirements.md + tech-stack-decisions.md.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / NFR Requirements — Steps 2-4 complete (plan + questions), awaiting answers (Step 5)
+
+---
+
 
 ## CONSTRUCTION — Unit `shared` — NFR Design Answers + Artifacts Generated
 **Timestamp**: 2026-08-31T07:45:00Z
@@ -344,3 +359,65 @@
 **Context**: CONSTRUCTION Phase / Unit shared / Code Generation — approved, committing & pushing
 
 ---
+
+## backend-api NFR Requirements — Answers Collected + Artifacts Generated
+**Timestamp**: 2026-08-31T09:00:00Z
+**User Input**: "@aidlc-docs/aidlc-state.md 파일을 읽고, 다음 작업을 진행해 줘. @aidlc-docs/construction/plans/backend-api-nfr-requirements-plan.md 의 작성을 완료했어."
+**AI Response**: Read plan; all 12 [Answer]: tags completed with recommended option A. Step 5 ambiguity analysis: no vague/ambiguous answers (all concrete recommended options) — no follow-up questions needed. Step 6 generated two artifacts: construction/backend-api/nfr-requirements/nfr-requirements.md (performance p95<300ms + polling 2s; scalability/availability N/A single-worker local; reliability atomic transactions + SQLite WAL/FK/busy_timeout; security JWT-per-request/bcrypt/rate-limit 5-per-5min-429/input bounds items≤100·qty1..999·body≤1MB/CORS explicit origins/JSON logging+request_id/dep-lock; maintainability ruff+mypy+layered; PBT-Partial pytest+Hypothesis+httpx; data Asia/Seoul+integer KRW) and tech-stack-decisions.md (FastAPI+Uvicorn+Pydantic v2, Python 3.12, SQLAlchemy 2.0, create-tables+seed no-Alembic, PyJWT HS256, passlib[bcrypt], in-memory sliding-window rate limit, env config incl JWT_SECRET/CORS_ORIGINS, project tree under backend/). Security Baseline compliance summary: no blocking findings; SECURITY-05 bounds now concrete (resolves FD deferral); SECURITY-10 dep-lock/vuln-scan confirmed. No contract §3/§4 change. Updated plan checkboxes Steps 5-7 [x]. Presented 2-option completion message; awaiting explicit approval (Step 8).
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / NFR Requirements — Steps 5-7 complete, awaiting approval
+
+---
+
+## backend-api NFR Requirements — Approval + Commit
+**Timestamp**: 2026-08-31T09:30:00Z
+**User Input**: "NFR Requirements 를 승인하고, 커밋해 줘. Design 단계로는 진행하지 마."
+**AI Response**: Recorded explicit approval of backend-api NFR Requirements (Step 8). Marked NFR Requirements [x] APPROVED in aidlc-state.md and updated Current Stage (backend-api NFR Requirements approved; NFR Design not yet started — user paused before Design). Committing NFR Requirements artifacts + plan + state/audit updates on branch `backend`. Per user instruction, NOT proceeding to NFR Design stage.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / NFR Requirements — approved (Step 8-9), committed; paused before NFR Design
+
+---
+
+## backend-api NFR Design — Plan + Clarification Questions
+**Timestamp**: 2026-08-31T10:00:00Z
+**User Input**: "@aidlc-docs/aidlc-state.md 파일을 읽어서 현재 상태를 파악하고, Backend 의 NFR design 단계를 진행해 줘."
+**AI Response**: Resumed backend-api unit at NFR Design stage (Functional Design + NFR Requirements both APPROVED). Loaded prior artifacts: NFR Requirements (NFR-BE-*), tech-stack-decisions.md (Q1~Q12=A), business-logic-model.md, integration-contract.md v1.0. Since NFR/toolchain already pinned, NFR Design focuses on design patterns + logical components. Created plan at aidlc-docs/construction/plans/backend-api-nfr-design-plan.md with Steps 1-9 checklist and 6 embedded [Answer]: clarification questions evaluating all 5 mandated categories: (Q1) route execution model + per-request DB session lifecycle [Performance/Logical], (Q2) SQLite engine/connection pool + PRAGMA connect-hook [Logical], (Q3) SQLITE_BUSY / UNIQUE write-contention bounded-retry pattern [Resilience], (Q4) global error handler domain-exception taxonomy → HTTP mapping [Resilience/Security], (Q5) auth/authz FastAPI dependency chain (deny-by-default/typ/IDOR ownership) [Security], (Q6) in-memory login rate-limiter component design incl. memory bounding/eviction [Security/Logical]. Scalability declared N/A (single worker) in §4 without a question. §4 also pins non-negotiable design (middleware chain ordering, request_id contextvar propagation, input validation + body-size middleware, logging masking) inherited from NFR/contract. Each question has recommended option A/★. No contract §3/§4 change. Awaiting user answers before generating nfr-design-patterns.md + logical-components.md (Step 5-6).
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / NFR Design — Steps 1-4 complete (plan + questions), awaiting answers (Step 5)
+
+---
+
+## backend-api NFR Design — Answers + Artifacts Generated
+**Timestamp**: 2026-08-31T10:30:00Z
+**User Input**: "@aidlc-docs/aidlc-state.md 파일을 읽고, 다음 단계를 진행해 줘. @aidlc-docs/construction/plans/backend-api-nfr-design-plan.md 파일에 Answer 를 완료했어."
+**AI Response**: Read state + NFR Design plan. All 6 [Answer]: tags completed with recommended option A (Q1 route model: sync def + threadpool + per-request session; Q2 engine: single QueuePool + connect-hook PRAGMA WAL/foreign_keys/busy_timeout; Q3 write-contention: bounded retry 3x backoff 10/20/40ms then fail closed; Q4 error taxonomy: AppError domain-exception hierarchy → HTTP mapping + generic 500; Q5 auth/authz dependency chain get_claims→require_admin/table→get_store_scope→assert_owns_resource deny-by-default/IDOR; Q6 in-memory sliding-window rate limiter with lazy-remove+sweep+key-cap eviction, thread-safe). Step 5 ambiguity analysis: all concrete recommended options, no follow-up needed. Step 6 generated two artifacts: construction/backend-api/nfr-design/nfr-design-patterns.md (10 sections: route/session lifecycle, DB engine/pool/PRAGMA, write-contention retry, global error taxonomy, auth/authz dep chain, rate limiter, middleware chain+request_id contextvar+logging masking, performance, scalability N/A, Security Baseline compliance summary) and logical-components.md (11 cross-cutting components C1-C11 with responsibilities/config/traceability, middleware chain + login-path + write-txn + request_id flow diagrams, env params, NFR/SECURITY/contract traceability matrix). Security Baseline: no blocking findings; SECURITY 01/02/06/07 N/A (local). No contract §3(model)/§4(claims) change. Updated plan checkboxes Steps 5-7 [x]. Presented 2-option completion message; awaiting explicit approval (Step 8).
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / NFR Design — Steps 5-7 complete, awaiting approval (Step 8)
+
+---
+
+## backend-api NFR Design — Approval + Commit
+**Timestamp**: 2026-08-31T10:45:00Z
+**User Input**: "커밋하고, Code Generation 은 진행하지 마."
+**AI Response**: Recorded explicit approval of backend-api NFR Design (Step 8). Marked NFR Design [x] APPROVED in aidlc-state.md and updated Current Stage (backend-api NFR Design approved; Infrastructure Design = SKIP; Code Generation NOT started — user paused before Code Generation). Committing NFR Design artifacts (nfr-design-patterns.md, logical-components.md) + plan + state/audit updates on branch `backend`. Per user instruction, NOT proceeding to Code Generation stage.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / NFR Design — approved (Step 8-9), committed; paused before Code Generation
+
+---
+
+## backend-api Code Generation — Part 1 Planning + Approval Prompt
+**Timestamp**: 2026-08-31T11:00:00Z
+**User Input**: "@aidlc-docs/aidlc-state.md 의 내용을 읽고, Code Generation 을 진행해 줘."
+**AI Response**: Resumed backend-api unit at Code Generation stage (Functional Design + NFR Requirements + NFR Design all APPROVED; Infrastructure Design SKIP). Loaded all prior artifacts: domain-entities.md / business-logic-model.md / business-rules.md (FD), nfr-requirements.md / tech-stack-decisions.md (NFR Req), nfr-design-patterns.md / logical-components.md (NFR Design), integration-contract.md v1.0 (SSOT), unit-of-work-story-map.md. Confirmed workspace root = /Users/chygg/workspace/hackerthon (state's ~/aidlc-workshop/table-order is stale); application code target = backend/ (greenfield, no existing dir). Created Code Generation plan at aidlc-docs/construction/plans/backend-api-code-generation-plan.md with numbered steps (Step 1 project scaffold → config/db-engine/models/schema → schemas → security(jwt/hashing/ratelimit/deps) → middleware+errors+logging → repositories → services → routers → main app wiring → seed → tests(unit PBT + integration) → docs summaries). Story traceability mapped to contract §2.6 endpoints (A1-S1, C1-S1, C2-S1/S2, C4-S1, C5-S1, A2-S4, A3-S2, A3-S1, A2-S1, A3-S3, A3-S4). No contract §3/§4 change. Presented plan summary; awaiting explicit approval before Part 2 Generation (Step 7).
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / Code Generation — Part 1 (Planning), awaiting approval (Step 7)
+
+---
+
+## backend-api Code Generation — Plan Approved, Part 2 Generation Started
+**Timestamp**: 2026-08-31T11:15:00Z
+**User Input**: "승인"
+**AI Response**: Recorded explicit approval of backend-api Code Generation plan (Part 1 Step 8). Proceeding to Part 2 (Generation): executing Steps 1-13 from backend-api-code-generation-plan.md in layer order, generating application code under backend/ (greenfield) and markdown summaries under aidlc-docs/construction/backend-api/code/. Marking plan checkboxes [x] as each step completes.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / Code Generation — Part 2 (Generation) in progress
+
+---
+
+## Code Generation (backend-api) — Part 2 Complete
+**Timestamp**: 2026-08-31T11:45:00Z
+**User Input**: (none — continuation of approved Part 2 generation)
+**AI Response**: Completed Part 2 (Generation) of backend-api Code Generation. Generated full application under backend/ (config/time_utils/logging_config, db engine/models/schema/session/seed, schemas, security jwt/hashing/ratelimit/deps, errors + middleware, repositories, services incl. pure pricing/order_number, routers, main.py) plus tests (unit PBT: pricing/order_number/serialization; integration: auth/order_flow/session_flow/security; conftest) and backend/README.md. Created code summaries under aidlc-docs/construction/backend-api/code/: repository-layer-summary.md, business-logic-summary.md, api-layer-summary.md, README-generation.md. Marked all plan Steps 1-13 checkboxes [x]. Updated aidlc-state.md (Unit 1 Code Generation [x], Current Stage). py_compile passed on all app modules; test execution deferred to Build & Test. Security Baseline: no blocking findings. No contract §3/§4 change. Presenting mandatory 2-option completion message.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / Code Generation — Part 2 (Generation) COMPLETE, awaiting completion approval

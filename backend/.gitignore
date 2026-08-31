@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.venv/
+venv/
+
+# 환경설정·DB (커밋 금지)
+.env
+*.db
+*.db-wal
+*.db-shm
