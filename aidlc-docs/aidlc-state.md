@@ -5,7 +5,7 @@
 - **Project Name**: Table Order Service
 - **Start Date**: 2026-08-31T00:00:00Z
 - **Current Phase**: CONSTRUCTION (in progress, per-unit)
-- **Current Stage**: Unit `shared` — Functional Design + NFR Requirements complete (approved, PR #1); NFR Design pending. Unit 1 (backend-api) → Functional Design APPROVED + NFR Requirements APPROVED + **NFR Design APPROVED** (2026-08-31, Q1~Q6 all A). Artifacts: construction/backend-api/nfr-design/{nfr-design-patterns.md, logical-components.md}. Infrastructure Design = SKIP (local). **Code Generation (backend-api) NOT started** — user paused before Code Generation. Reconciliation w/ `shared` intact: Q10→A (no menu availability), 409 uses SESSION_CLOSED, has_new always false. No contract §3/§4/§9 change.
+- **Current Stage**: Unit `shared` — Functional Design + NFR Requirements complete (approved, PR #1); NFR Design pending. Unit 1 (backend-api) → Functional Design APPROVED + NFR Requirements APPROVED + NFR Design APPROVED (2026-08-31, Q1~Q6 all A). Infrastructure Design = SKIP (local). **Code Generation (backend-api) — Part 1 (Planning) + Part 2 (Generation) COMPLETE**: plan at construction/plans/backend-api-code-generation-plan.md (Steps 1-13 all [x]); full `backend/` app + tests + code summaries generated. Awaiting completion approval (Request Changes / Continue → next unit or Build & Test). Reconciliation w/ `shared` intact: Q10→A (no menu availability), 409 uses SESSION_CLOSED, has_new always false. No contract §3/§4/§9 change.
 - **Execution Mode**: PARALLEL (2026-08-31) — 4 units developed concurrently by separate owners against Integration Contract v1.0 (SSOT). Original strict sequential order relaxed; contract is the coordination boundary (see unit-of-work-dependency.md §4). This owner: backend-api.
 
 ## Workspace State
@@ -37,7 +37,7 @@
 - [x] NFR Requirements - EXECUTE (APPROVED 2026-08-31: Q1~Q12 all recommended A; nfr-requirements.md + tech-stack-decisions.md; FastAPI+Pydantic v2 / Python 3.12 / SQLAlchemy 2.0; SECURITY-05 bounds + rate limit 5/5min concrete; no blocking findings; no contract §3/§4 change)
 - [x] NFR Design - EXECUTE (APPROVED 2026-08-31: nfr-design-patterns.md + logical-components.md; Q1~Q6 all A — sync def+threadpool+per-request session, single engine+QueuePool+connect-hook PRAGMA WAL/FK/busy_timeout, write-contention retry 3x 10/20/40ms→fail closed, AppError taxonomy→HTTP mapping, auth/authz dep chain deny-by-default/IDOR, in-memory sliding-window rate limiter w/ sweep+cap eviction; middleware chain fixed; SECURITY no blocking, 01/02/06/07 N/A; no contract §3/§4 change)
 - [ ] Infrastructure Design - SKIP (local dev only, no cloud/IaC)
-- [ ] Code Generation - EXECUTE
+- [x] Code Generation - EXECUTE (Part 1 Planning APPROVED + Part 2 Generation COMPLETE 2026-08-31: full `backend/` app generated — config/db/schemas/security/middleware/errors/repositories/services/routers/main/seed + unit PBT + integration tests; docs at construction/backend-api/code/{repository-layer,business-logic,api-layer}-summary.md + README-generation.md; plan Steps 1-13 all [x]; Security Baseline no blocking findings; py_compile passes; test execution deferred to Build & Test; no contract §3/§4 change) — awaiting completion approval
 
 #### Unit 2: shared
 - [x] Functional Design - EXECUTE (approved 2026-08-31; PR #1)

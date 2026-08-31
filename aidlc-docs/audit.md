@@ -344,3 +344,25 @@
 **Context**: CONSTRUCTION Phase / Unit 1 backend-api / NFR Design — approved (Step 8-9), committed; paused before Code Generation
 
 ---
+
+## backend-api Code Generation — Part 1 Planning + Approval Prompt
+**Timestamp**: 2026-08-31T11:00:00Z
+**User Input**: "@aidlc-docs/aidlc-state.md 의 내용을 읽고, Code Generation 을 진행해 줘."
+**AI Response**: Resumed backend-api unit at Code Generation stage (Functional Design + NFR Requirements + NFR Design all APPROVED; Infrastructure Design SKIP). Loaded all prior artifacts: domain-entities.md / business-logic-model.md / business-rules.md (FD), nfr-requirements.md / tech-stack-decisions.md (NFR Req), nfr-design-patterns.md / logical-components.md (NFR Design), integration-contract.md v1.0 (SSOT), unit-of-work-story-map.md. Confirmed workspace root = /Users/chygg/workspace/hackerthon (state's ~/aidlc-workshop/table-order is stale); application code target = backend/ (greenfield, no existing dir). Created Code Generation plan at aidlc-docs/construction/plans/backend-api-code-generation-plan.md with numbered steps (Step 1 project scaffold → config/db-engine/models/schema → schemas → security(jwt/hashing/ratelimit/deps) → middleware+errors+logging → repositories → services → routers → main app wiring → seed → tests(unit PBT + integration) → docs summaries). Story traceability mapped to contract §2.6 endpoints (A1-S1, C1-S1, C2-S1/S2, C4-S1, C5-S1, A2-S4, A3-S2, A3-S1, A2-S1, A3-S3, A3-S4). No contract §3/§4 change. Presented plan summary; awaiting explicit approval before Part 2 Generation (Step 7).
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / Code Generation — Part 1 (Planning), awaiting approval (Step 7)
+
+---
+
+## backend-api Code Generation — Plan Approved, Part 2 Generation Started
+**Timestamp**: 2026-08-31T11:15:00Z
+**User Input**: "승인"
+**AI Response**: Recorded explicit approval of backend-api Code Generation plan (Part 1 Step 8). Proceeding to Part 2 (Generation): executing Steps 1-13 from backend-api-code-generation-plan.md in layer order, generating application code under backend/ (greenfield) and markdown summaries under aidlc-docs/construction/backend-api/code/. Marking plan checkboxes [x] as each step completes.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / Code Generation — Part 2 (Generation) in progress
+
+---
+
+## Code Generation (backend-api) — Part 2 Complete
+**Timestamp**: 2026-08-31T11:45:00Z
+**User Input**: (none — continuation of approved Part 2 generation)
+**AI Response**: Completed Part 2 (Generation) of backend-api Code Generation. Generated full application under backend/ (config/time_utils/logging_config, db engine/models/schema/session/seed, schemas, security jwt/hashing/ratelimit/deps, errors + middleware, repositories, services incl. pure pricing/order_number, routers, main.py) plus tests (unit PBT: pricing/order_number/serialization; integration: auth/order_flow/session_flow/security; conftest) and backend/README.md. Created code summaries under aidlc-docs/construction/backend-api/code/: repository-layer-summary.md, business-logic-summary.md, api-layer-summary.md, README-generation.md. Marked all plan Steps 1-13 checkboxes [x]. Updated aidlc-state.md (Unit 1 Code Generation [x], Current Stage). py_compile passed on all app modules; test execution deferred to Build & Test. Security Baseline: no blocking findings. No contract §3/§4 change. Presenting mandatory 2-option completion message.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / Code Generation — Part 2 (Generation) COMPLETE, awaiting completion approval

@@ -1,0 +1,13 @@
+# backend-api runtime dependencies — version-pinned (SECURITY-10)
+# 정확한 하위 의존 lock은 `pip freeze` 또는 uv.lock으로 확정 가능. 아래는 직접 의존 핀.
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+pydantic==2.9.2
+pydantic-settings==2.6.1
+sqlalchemy==2.0.36
+pyjwt==2.9.0
+passlib[bcrypt]==1.7.4
+python-dotenv==1.0.1
+
+# --- dev/test (install: pip install -r requirements-dev.txt) ---
+# 아래는 참고용. dev 설치는 `pip install -e ".[dev]"` 사용 권장.
