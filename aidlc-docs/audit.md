@@ -200,6 +200,14 @@
 
 ---
 
+## CONSTRUCTION Start — Parallel Execution Decision + backend-api Functional Design
+**Timestamp**: 2026-08-31T00:00:00Z
+**User Input**: "backend-api, shared, customer-web, admin-web 을 병렬로 진행할거야. 내가 backend-api 담당인데, construction 단계를 시작해 줘."
+**AI Response**: Recorded workflow change — units now proceed in PARALLEL (each owner works their unit against the confirmed Integration Contract v1.0 as SSOT) instead of the original strict sequential order. This is safe because unit dependencies are on the confirmed contract, not on completed peer code (unit-of-work-dependency.md §4). Starting CONSTRUCTION per-unit loop for Unit 1 (backend-api), first stage = Functional Design (EXECUTE). Loaded context: functional-design.md rules, unit-of-work.md, unit-of-work-story-map.md, component-methods.md, services.md, integration-contract.md, security-baseline.md (enabled), question-format-guide.md, depth-levels.md. Creating functional design plan with embedded [Answer]: questions at aidlc-docs/construction/plans/backend-api-functional-design-plan.md.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / Functional Design — plan + questions authored, awaiting user answers
+
+---
+
 ## CONSTRUCTION — Unit `shared` — Kickoff & Approach Selection
 **Timestamp**: 2026-08-31T06:00:00Z
 **User Input**: "나는 consturction 단계에서 shared를 담당한다." → (approach question) Selected: "정식 AI-DLC 루프" (full AI-DLC per-unit loop).
@@ -246,6 +254,38 @@
 **Status**: NFR Requirements APPROVED for unit shared.
 **AI Response**: Marked NFR Requirements [x] in aidlc-state.md (next: NFR Design). Committing NFR artifacts + plan + state/audit updates to branch construction/shared-functional-design and pushing to origin (updates PR #1).
 **Context**: CONSTRUCTION Phase / Unit shared / NFR Requirements — approved; git push; next stage NFR Design
+
+---
+
+## backend-api Functional Design — Clarification Answers Received
+**Timestamp**: 2026-08-31T00:00:00Z
+**User Input**: "@aidlc-docs/construction/plans/backend-api-functional-design-plan.md 의 모든 내용에 Answer 를 작성했어. 해당 내용대로 기능 정의를 진행하고, commit하고, remote branch 에 push 해 줘."
+**AI Response**: Read all 11 embedded [Answer]: tags. Answers: Q1=B(관리자 자유 상태 전이), Q2=B(미완료 주문 있으면 이용완료 차단 409), Q3=B(soft delete: deleted_at/deleted_by), Q4=A(테이블 4~6자리 숫자 PIN 예외 + 관리자 8자↑), Q5=C(활성 세션 재-setup 거부 409), Q6=A(트랜잭션 내 MAX(order_seq)+1 채번), Q7=A(요청 시 세션 만료 검사→401 TOKEN_EXPIRED, 관리자 재-setup), Q8=B(최소 시드 세트), Q9=A(has_new 서버 미계산, 클라 판단), Q10=B(Menu.is_available 가용성 토글, 품절 주문 422), Q11=B(수치 상한 없음). Detected blocking conflict: Q11=B contradicts user-enabled Security Baseline SECURITY-05 (mandatory string/array length bounds + request body size limit) and Integration Contract §8.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / Functional Design — answers collected, ambiguity/conflict analysis (Step 5)
+
+---
+
+## backend-api Functional Design — SECURITY-05 Blocking Conflict Follow-up
+**Timestamp**: 2026-08-31T00:00:00Z
+**SECURITY Finding**: SECURITY-05 (Input Validation) — Q11=B ("타입 검증만, 수치 상한 없음") would omit mandatory length/size bounds required by the enabled Security Baseline and Integration Contract §8. Presented follow-up question with options: (1) 보안 최소 상한 적용 [recommended], (2) 합리적 기본값 전체(Q11 A), (3) Q11=B 그대로(would create blocking finding, not recommended).
+**User Input**: Selected "보안 최소 상한 적용 (권장)".
+**AI Response**: Conflict resolved. Apply only SECURITY-05-mandated minimum bounds (string max length, items array max size, quantity ceiling, request body size limit), no arbitrary business caps; concrete values deferred to NFR Design. SECURITY-05 now Compliant — no blocking finding. Recorded resolution in plan §4.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / Functional Design — blocking security conflict resolved per SECURITY-05 enforcement
+
+---
+
+## backend-api Functional Design — Artifacts Generated
+**Timestamp**: 2026-08-31T00:00:00Z
+**AI Response**: Generated 3 functional design artifacts at aidlc-docs/construction/backend-api/functional-design/: domain-entities.md (Store/AdminUser/Table/TableSession/Category/Menu/Order/OrderItem/OrderHistory/OrderHistoryItem/AuditLog/LoginAttempt + SQLite mapping + snapshot/audit rules), business-logic-model.md (per-service algorithms, transaction boundaries, order creation with server-side total re-validation, MAX+1 numbering, dashboard aggregation, atomic session completion, JWT auth, PBT Testable Properties §8), business-rules.md (input validation BR-VAL-*, state transitions, authz/IDOR BR-AUTHZ-*, auth/credential BR-AUTH-*, error mapping, audit rules, SECURITY compliance summary §9). frontend-components.md marked N/A (API-only service). Contract-impact notes: Menu.is_available field addition (minor) and TableCard.has_new server-not-computed — flagged for contract §9 propagation. SECURITY compliance: no blocking findings (SECURITY-05 Compliant via minimum bounds; documented exceptions: 테이블 PIN Q4=A, MFA N/A local MVP). PBT (Partial): properties identified per PBT-01, framework=Hypothesis (to be pinned in NFR Requirements). Updated plan checkboxes and aidlc-state.md (Functional Design marked complete). Proceeding to commit + push to remote branch 'backend' per user request.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / Functional Design — artifacts complete, committing
+
+---
+
+## backend-api — Rebase onto main + Conceptual Reconciliation with `shared`
+**Timestamp**: 2026-08-31T00:00:00Z
+**User Input**: "1. main branch 에 shared unit 의 기능 구현이 일부 진행되었어. Rebase 할건데, 현재의 backend-api 와 비교했을 때 개념적으로 정합성이 맞지 않는 부분이 있는 것 같아. 정합성이 맞지 않는 부분을 shared 쪽을 우선해서 해소하고, 애매한 부분은 모두 질문해 줘. 2. Rebase 가 완료된 상황을 backend 에 추가 커밋으로 얹고, remote 의 backend branch 에 push 해 줘."
+**AI Response**: Rebased branch `backend` (backend-api Functional Design, 2 commits) onto `main` (which now contains `shared` FD + NFR Requirements, PRs #1/#2). Resolved git conflicts in aidlc-state.md (merged Current Stage: shared complete + backend-api FD complete) and audit.md (append-only: kept both units' entries). Reviewed conceptual consistency backend-api ↔ shared against Integration Contract v1.0. Findings surfaced; ambiguous points asked via question (AskUserQuestion). **User decisions**: (Q-menu-availability) "backend에서 제거 (shared 우선)"; (Q-409-code) "SESSION_CLOSED 재사용". Applied reconciliation (shared preferred): (1) **Q10 reverted B→A** — removed Menu.is_available field, sold-out 422 rule (former BR-ORD-05), MENU_UNAVAILABLE code across domain-entities/business-logic-model/business-rules; rationale: absent from contract v1.0 §3 & shared mirror, and requirements §5 excludes inventory mgmt → now fully matches contract §3.2 (no §9 change). (2) **409 conflict code = SESSION_CLOSED** (reuse contract-defined code; contract code set unchanged). (3) **has_new always included as false** (never omitted) — shared TableCard requires the field; server still does not compute newness (Q9=A). Updated plan summary, aidlc-state.md Current Stage note. Committing reconciliation as an additional commit on `backend` and pushing to origin/backend per request.
+**Context**: CONSTRUCTION Phase / Unit 1 backend-api / Functional Design — rebased + reconciled with shared; committing & pushing to origin/backend
 
 ---
 
