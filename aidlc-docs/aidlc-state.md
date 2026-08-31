@@ -5,7 +5,7 @@
 - **Project Name**: Table Order Service
 - **Start Date**: 2026-08-31T00:00:00Z
 - **Current Phase**: CONSTRUCTION (in progress, per-unit)
-- **Current Stage**: Unit `shared` — Functional Design + NFR Requirements complete (approved, PR #1); NFR Design pending. Unit 1 (backend-api) → Functional Design (COMPLETE — artifacts generated, awaiting approval to proceed to NFR Requirements). Rebased onto main + reconciled with `shared` (2026-08-31): Q10→A (no menu availability), 409 uses SESSION_CLOSED, has_new always false. No contract §9 change.
+- **Current Stage**: Unit `shared` — Functional Design + NFR Requirements + NFR Design complete (approved 2026-08-31); next = Code Generation (Infra SKIP). Unit 1 (backend-api) → Functional Design (COMPLETE — artifacts generated, awaiting approval to proceed to NFR Requirements). Rebased onto main + reconciled with `shared` (2026-08-31): Q10→A (no menu availability), 409 uses SESSION_CLOSED, has_new always false. No contract §9 change.
 - **Execution Mode**: PARALLEL (2026-08-31) — 4 units developed concurrently by separate owners against Integration Contract v1.0 (SSOT). Original strict sequential order relaxed; contract is the coordination boundary (see unit-of-work-dependency.md §4). This owner: backend-api.
 
 ## Workspace State
@@ -42,7 +42,7 @@
 #### Unit 2: shared
 - [x] Functional Design - EXECUTE (approved 2026-08-31; PR #1)
 - [x] NFR Requirements - EXECUTE (approved 2026-08-31; PR #1)
-- [ ] NFR Design - EXECUTE
+- [x] NFR Design - EXECUTE (approved 2026-08-31; nfr-design-patterns / logical-components)
 - [ ] Infrastructure Design - SKIP
 - [ ] Code Generation - EXECUTE
 

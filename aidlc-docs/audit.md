@@ -289,3 +289,27 @@
 
 ---
 
+## CONSTRUCTION — Unit `shared` — State Check After backend Merge + NFR Design Start
+**Timestamp**: 2026-08-31T07:30:00Z
+**User Input**: "backend 규칙과 충돌하는 것이 있어서 backend 담당자가 규칙들을 수정했다. git branch는 main으로 변경 후 업데이트된 파일들을 pull 했다. 현재 상태를 확인하라." → then "다음 단계를 진행".
+**AI Response (shared owner)**: Verified current state on main (backend PR #3 merged: commits 8c5877d, 555b299, ef973f0). Confirmed NO changes to integration-contract.md (SSOT stable) and NO changes to any shared/ artifact — backend reconciled ITS design to shared/contract (shared preferred). Consistency check passed: shared Menu has no is_available (matches), ApiErrorCode includes SESSION_CLOSED (matches), TableCard.has_new: boolean present (backend now always sends false; shared consumer computes newness via lastServerTime per Q6=A). No shared rework needed; no contract §9 propagation. Proceeding to NFR Design (shared): created branch construction/shared-nfr-design off main; created shared-nfr-design-plan.md with embedded [Answer] questions (Resilience/Performance/Security/Logical Components patterns for a TS library). Awaiting answers.
+**Context**: CONSTRUCTION Phase / Unit shared / NFR Design — plan + questions created, awaiting answers
+
+---
+
+
+## CONSTRUCTION — Unit `shared` — NFR Design Answers + Artifacts Generated
+**Timestamp**: 2026-08-31T07:45:00Z
+**User Input**: "추천안으로 즉시 진행"
+**AI Response (shared owner)**: Recorded NFR Design answers Q1~Q8 = A (all recommended ★) in shared-nfr-design-plan.md; no ambiguity (no follow-up questions needed). Generated 2 NFR Design artifacts at aidlc-docs/construction/shared/nfr-design/: (1) nfr-design-patterns.md — Resilience (RP-01 10s AbortController timeout + caller signal merge; RP-02 no auto-retry on mutations/GET, polling-only periodic retry; RP-03 polling silent-retry + cleanup; RP-04 fail-closed onUnauthorized), Performance (PP-01 layer separation + tree-shaking, PP-02 useRef/useCallback/useReducer hook stability, PP-03 O(n) pricing, PP-04 visibility-paused polling), Security (SP-01 no-logging + optional onError, SP-02 no credential storage/getToken callback, SP-03 XSS-safe render, SP-04 zero runtime deps), Maintainability (MP-01 codegen drift CI gate, MP-02 single normalizeError module, MP-03 stateless controlled UiKit + accessibility), Scalability N/A. (2) logical-components.md — module map & dependency direction (types←pricing/api/hooks/ui, React boundary at hooks/ui only, zero cycles), component specs (types boostrap layer, pricing PBT target, createApiClient factory + normalizeError + ApiError class, usePolling ref-stable, controlled UiKit), OpenAPI codegen pipeline w/ CI drift gate, test harness matrix, NFR↔component traceability. Extension compliance: Security Baseline enforced (SP-01~04 map SECURITY-03/04/08/10 — all Compliant, others N/A for a client library); PBT Partial (pricing P1~P6 identified). Marked plan Steps 5-7 [x]. Presenting standardized 2-option completion message; awaiting explicit approval.
+**Context**: CONSTRUCTION Phase / Unit shared / NFR Design — artifacts complete, awaiting approval
+
+---
+
+## CONSTRUCTION — Unit `shared` — NFR Design Approved + Push
+**Timestamp**: 2026-08-31T07:55:00Z
+**User Input**: "승인 후 push"
+**AI Response (shared owner)**: User approved NFR Design (Continue to Next Stage). Marked plan Steps 8-9 [x]; updated aidlc-state.md (shared NFR Design [x] approved). Committing NFR Design artifacts (nfr-design-patterns.md, logical-components.md), plan, state, audit to branch construction/shared-nfr-design and pushing to origin. Next per-unit stage = Code Generation (shared); Infrastructure Design SKIP (library).
+**Context**: CONSTRUCTION Phase / Unit shared / NFR Design — approved, pushing
+
+---
